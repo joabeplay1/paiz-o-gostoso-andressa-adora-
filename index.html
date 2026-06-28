@@ -9,36 +9,49 @@
 <body>
 
     <div class="container">
+        <!-- PAINEL LATERAL: Configurações, Input e Abas -->
         <aside class="sidebar">
             <h2>Criador de Apps</h2>
-            <textarea id="user-input" placeholder="Descreva o aplicativo que você quer criar... Ex: Um app de lista de tarefas com tema escuro."></textarea>
+            
+            <!-- Campo para colar a Chave da API -->
+            <div class="api-key-container">
+                <label for="api-key-input">Chave API Gemini:</label>
+                <input type="password" id="api-key-input" placeholder="Cole sua AIza... do AI Studio aqui">
+            </div>
+
+            <!-- Entrada do Usuário -->
+            <textarea id="user-input" placeholder="Descreva o aplicativo que você quer criar... Ex: Um app de cronômetro pomodoro com design futurista e sons."></textarea>
             <button id="btn-generate">Gerar Aplicativo</button>
 
-            <hr>
+            <hr class="divider">
 
+            <!-- Abas laterais solicitadas -->
             <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('prompt')">Prompt Gerado</button>
-                <button class="tab-btn" onclick="switchTab('code')">Código Fonte</button>
+                <button id="tab-btn-prompt" class="tab-btn active" onclick="switchTab('prompt')">Prompt</button>
+                <button id="tab-btn-code" class="tab-btn" onclick="switchTab('code')">Código Gerado</button>
             </div>
             
+            <!-- Conteúdo das Abas -->
             <div id="tab-content-prompt" class="tab-content">
-                <textarea id="output-prompt" readonly placeholder="O prompt aprimorado aparecerá aqui..."></textarea>
+                <textarea id="output-prompt" readonly placeholder="O prompt que o sistema estruturar aparecerá aqui..."></textarea>
             </div>
             <div id="tab-content-code" class="tab-content" style="display:none;">
-                <textarea id="output-code" readonly placeholder="O código HTML/CSS/JS aparecerá aqui..."></textarea>
+                <textarea id="output-code" readonly placeholder="O código fonte gerado aparecerá aqui..."></textarea>
             </div>
         </aside>
 
+        <!-- ÁREA PRINCIPAL: Controle de telas e Visualização (Preview) -->
         <main class="preview-area">
             <div class="device-controls">
                 <button onclick="changeDevice('mobile')">📱 Celular</button>
                 <button onclick="changeDevice('tablet')">📟 Tablet</button>
                 <button onclick="changeDevice('desktop')">💻 Desktop</button>
-                <button onclick="toggleFullscreen()">📺 Tela Cheia</button>
+                <button onclick="toggleFullscreen()" class="btn-fullscreen">📺 Tela Cheia</button>
             </div>
 
+            <!-- Simulador de Dispositivos -->
             <div id="device-simulator" class="device-desktop">
-                <iframe id="app-preview" srcdoc="<h1>O seu app aparecerá aqui</h1>"></iframe>
+                <iframe id="app-preview" srcdoc="<div style='font-family:sans-serif; text-align:center; margin-top:100px; color:#555;'><h2>A visualização do seu app aparecerá aqui!</h2><p>Digite a descrição ao lado e clique em Gerar.</p></div>"></iframe>
             </div>
         </main>
     </div>
