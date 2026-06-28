@@ -1,0 +1,113 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body, html {
+    height: 100%;
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Painel Lateral */
+.sidebar {
+    width: 350px;
+    background-color: #181825;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    border-right: 1px solid #313244;
+}
+
+textarea {
+    width: 100%;
+    height: 120px;
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    border-radius: 8px;
+    padding: 10px;
+    resize: none;
+}
+
+button {
+    background-color: #89b4fa;
+    color: #11111b;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+button:hover {
+    background-color: #b4befe;
+}
+
+/* Abas de Código e Prompt */
+.tabs {
+    display: flex;
+    gap: 10px;
+}
+.tab-btn {
+    flex: 1;
+    background-color: #313244;
+    color: #cdd6f4;
+    font-size: 0.8rem;
+}
+.tab-btn.active {
+    background-color: #45475a;
+    border-bottom: 2px solid #89b4fa;
+}
+
+/* Área do Preview */
+.preview-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #11111b;
+    position: relative;
+}
+
+.device-controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+/* Simulador de Dispositivos dinâmico */
+#device-simulator {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+#app-preview {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff;
+}
+
+/* Classes que o JS vai alternar */
+.device-mobile { width: 375px; height: 667px; border: 12px solid #313244; border-radius: 24px; }
+.device-tablet { width: 768px; height: 1024px; border: 16px solid #313244; border-radius: 24px; }
+.device-desktop { width: 90%; height: 80%; }
+.device-fullscreen { 
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+    z-index: 9999; border-radius: 0; border: none; 
+}
