@@ -1,482 +1,146 @@
-document.addEventListener("DOMContentLoaded", ()=>{
+let codigoAtual = "";
 
- const savedKey =
- localStorage.getItem("gemini_api_key");
-
- if(savedKey){
-  document.getElementById(
-   "api-key-input"
-  ).value=savedKey;
- }
-
- const btn=
- document.getElementById("btn-generate");
-
- btn.addEventListener(
-  "click",
-  generateApp
- );
-
+document.addEventListener('DOMContentLoaded', () => {
+    const savedKey = localStorage.getItem('gemini_api_key');
+    if (savedKey) {
+        document.getElementById('api-key-input').value = savedKey;
+    }
 });
 
-async function generateApp(){
-
- const apiKey=
- document.getElementById(
-  "api-key-input"
- ).value.trim();
-
- const userInput=
- document.getElementById(
-  "user-input"
- ).value.trim();
-
- const errorBox=
- document.getElementById(
-  "error-box"
- );
-
- errorBox.innerText="";
-
- if(!apiKey){
-  errorBox.innerText=
-  "Coloque sua API";
-  return;
- }
-
- if(!userInput){
-  errorBox.innerText=
-  "Digite sua ideia";
-  return;
- }
-
- localStorage.setItem(
-  "gemini_api_key",
-  apiKey
- );
-
- const prompt = `
-Você é um Engenheiro de Software Sênior, Arquiteto Full Stack, Especialista em UX/UI, Front-end, Back-end, Performance, Segurança, Acessibilidade e Inteligência Artificial.
-
-Sua missão é criar um aplicativo COMPLETO, moderno, profissional e totalmente funcional utilizando APENAS um único arquivo HTML.
-
-O usuário quer:
-
-${userInput}
-
-REGRAS OBRIGATÓRIAS:
-
-• Responda SOMENTE código HTML completo.
-• Nunca explique nada.
-• Nunca escreva texto antes ou depois do código.
-• Nunca utilize Markdown.
-• Nunca utilize \`\`\`html.
-• Comece obrigatoriamente com <!DOCTYPE html>.
-• Termine obrigatoriamente com </html>.
-
-O HTML deve conter obrigatoriamente:
-
-✔ HTML5 completo
-✔ CSS dentro de <style>
-✔ JavaScript dentro de <script>
-
-Todo o aplicativo deve estar em um único arquivo HTML.
-
-O aplicativo deve parecer um software comercial Premium.
-
-Sempre utilizar:
-
-• Design moderno.
-• Interface Premium.
-• Glassmorphism quando fizer sentido.
-• Neomorphism quando apropriado.
-• Bordas suaves.
-• Sombras modernas.
-• Gradientes profissionais.
-• Layout elegante.
-• Responsividade completa.
-• Mobile First.
-• Desktop otimizado.
-• Tablet otimizado.
-• Grid moderno.
-• Flexbox.
-• Tipografia Premium.
-• Ícones SVG.
-• Componentes reutilizáveis.
-• Código organizado.
-
-Toda interface deve possuir QUALIDADE PREMIUM.
-
-Sempre entregar:
-
-• Títulos em alta qualidade.
-• Textos extremamente legíveis.
-• Botões modernos.
-• Cards Premium.
-• Menus profissionais.
-• Barras de navegação elegantes.
-• Painéis modernos.
-• Formulários profissionais.
-• Inputs modernos.
-• Tabelas elegantes.
-• Dashboards profissionais.
-• Modais modernos.
-• Toasts elegantes.
-• Loaders profissionais.
-• Skeleton Loading.
-• Feedback visual.
-• Estados de carregamento.
-• Barras de progresso.
-• Indicadores visuais.
-
-Sempre que fizer sentido adicionar:
-
-• Tema Claro.
-• Tema Escuro.
-• Alternância entre temas.
-• localStorage.
-• Persistência de configurações.
-• Histórico.
-• Pesquisa.
-• Filtros.
-• Ordenação.
-• Exportação.
-• Importação.
-• Impressão.
-• Compartilhamento.
-• Atalhos de teclado.
-
-Qualidade Visual:
-
-• Imagens em alta qualidade (HD ou superior) quando necessário.
-• Ícones vetoriais SVG.
-• Excelente tipografia.
-• Excelente contraste.
-• Excelente espaçamento.
-• Excelente alinhamento.
-• Excelente experiência do usuário.
-
-Qualidade das animações:
-
-• Fluidas.
-• Suaves.
-• Naturais.
-• Elegantes.
-• Profissionais.
-• Leves.
-• Otimizadas.
-• Sem travamentos.
-• Compatíveis com desktop e mobile.
-
-Qualidade do áudio (quando existir):
-
-• Alta qualidade.
-• Sons limpos.
-• Volume equilibrado.
-• Controles de reprodução.
-• Nunca reproduzir automaticamente sem necessidade.
-
-JavaScript:
-
-• Modular.
-• Organizado.
-• Escalável.
-• Fácil manutenção.
-• Sem erros.
-• Sem warnings.
-• Sem código morto.
-• Sem duplicação.
-• Sem bibliotecas externas.
-• Sem frameworks.
-• Código reutilizável.
-• Funções organizadas.
-• Tratamento de erros.
-• Validação completa.
-• Eventos bem estruturados.
-
-CSS:
-
-• Limpo.
-• Organizado.
-• Responsivo.
-• Variáveis CSS.
-• Código reutilizável.
-• Performance otimizada.
-• Sem CSS repetido.
-
-Sempre priorizar:
-
-1. Qualidade.
-2. Performance.
-3. Compatibilidade.
-4. Segurança.
-5. UX.
-6. UI.
-7. Organização.
-8. Escalabilidade.
-9. Manutenção.
-10. Acessibilidade.
-
-Sempre otimizar:
-
-• Velocidade.
-• Renderização.
-• Responsividade.
-• SEO básico.
-• Acessibilidade.
-• Performance.
-• Compatibilidade entre navegadores.
-
-Evitar:
-
-• Código repetido.
-• Código morto.
-• Variáveis inúteis.
-• CSS redundante.
-• Loops desnecessários.
-• Erros no console.
-• Layout quebrado.
-• Componentes desalinhados.
-• Interfaces simples demais.
-
-Sempre utilizar boas práticas modernas de desenvolvimento.
-
-Quando necessário utilizar:
-
-• SVG.
-• Canvas.
-• CSS moderno.
-• Recursos públicos confiáveis.
-• Assets gratuitos de alta qualidade.
-• Fontes profissionais.
-• Ícones vetoriais.
-
-Sempre entregar um aplicativo completo, funcional, bonito, organizado, otimizado e pronto para produção.
-
-Nunca remover funcionalidades importantes.
-
-Nunca entregar código incompleto.
-
-Nunca utilizar placeholders desnecessários.
-
-Sempre implementar todas as funcionalidades solicitadas pelo usuário.
-
-O resultado final deve parecer um aplicativo profissional publicado na App Store, Google Play ou utilizado por grandes empresas, com acabamento visual de altíssimo nível, excelente experiência do usuário, desempenho otimizado e qualidade premium em todos os elementos.
-
-Responda SOMENTE o HTML completo.
-`;
-
- document.getElementById(
-  "output-prompt"
- ).value=prompt;
-
- switchTab("prompt");
-
- const btn=
- document.getElementById(
-  "btn-generate"
- );
-
- btn.disabled=true;
- btn.innerText="Gerando...";
-
- try{
-
-  const url=
-  `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-
-  const response=
-  await fetch(url,{
-   method:"POST",
-
-   headers:{
-    "Content-Type":
-    "application/json"
-   },
-
-   body:JSON.stringify({
-
-    contents:[
-      {
-       parts:[
-         {
-          text:prompt
-         }
-       ]
-      }
-    ]
-
-   })
-
-  });
-
-  if(!response.ok){
-
-   const erro=
-   await response.json();
-
-   throw new Error(
-    erro.error.message
-   );
-
-  }
-
-  const data=
-  await response.json();
-
-  if(
-   !data.candidates
-  ){
-   throw new Error(
-    "Gemini não respondeu"
-   );
-  }
-
-  let code=
-  data.candidates[0]
-  .content.parts[0].text;
-
-  code=
-  code
-  .replace(/```html/gi,"")
-  .replace(/```/gi,"")
-  .trim();
-
-  document.getElementById(
-   "output-code"
-  ).value=code;
-
-  const iframe=
-  document.getElementById(
-   "app-preview"
-  );
-
-  iframe.srcdoc=code;
-
-  switchTab("code");
-
- }
-
- catch(error){
-
-  errorBox.innerText=
-  error.message;
-
- }
-
- finally{
-
-  btn.disabled=false;
-
-  btn.innerText=
-  "GERAR APP";
-
- }
-
+document.getElementById('btn-generate').addEventListener('click', async () => {
+    const geminiKey = document.getElementById('api-key-input').value.trim();
+    const userInput = document.getElementById('user-input').value.trim();
+
+    if (!geminiKey || geminiKey.startsWith("http")) {
+        alert("Erro: Insira uma chave de API válida do Gemini (Ex: AIzaSy...).");
+        return;
+    }
+    if (!userInput) {
+        alert("Por favor, digite uma instrução para criar ou alterar o app.");
+        return;
+    }
+
+    localStorage.setItem('gemini_api_key', geminiKey);
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`;
+    
+    const btn = document.getElementById('btn-generate');
+    btn.innerText = "Pensando e Revisando... ⏳";
+    btn.disabled = true;
+
+    // INJEÇÃO DAS 12 REGRAS DE SOFTWARE COMERCIAL DIRETAMENTE NO PROMPT INTERNO
+    let instrucoesAvançadas = `
+    Aja como um Engenheiro de Software Sênior e Especialista em UX/UI das maiores Big Techs (Google, Apple, Notion, Figma).
+    
+    SIGA OBRIGATORIAMENTE ESTE PROCESSO MENTAL ANTES DE DEVOLVER O CÓDIGO:
+    1. Entenda perfeitamente o pedido do usuário.
+    2. Planeje toda a arquitetura interna de software.
+    3. Escolha os melhores componentes interativos.
+    4. Projete um layout moderno baseado em Visual Hierarchy, Spacing equilibrado, White Space elegante, Microinterações e Motion Design premium (estilo Apple Human Interface e Glass UI).
+    5. Crie soluções modulares separando a lógica internamente mesmo em arquivo único: [Config, Utils, Components, Services, State, Events, UI, Storage].
+    6. SEMPRE implemente componentes Premium funcionais se fizerem sentido para a experiência: Toasts dinâmicos, Modais, Dialogs, Dropdowns, Tooltips, Accordions, Skeletons de carregamento ou filtros avançados.
+    7. REGRA ABSOLUTA: Não use soluções improvisadas, placeholders ou dados fictícios estáticos desnecessários. Tudo deve funcionar de verdade em nível de produção (botões, lógicas, submissões e persistências).
+    8. Aplique Clean Code rígido: Nomes de variáveis explícitos, sem código morto e sem duplicação de CSS/JS.
+    9. SISTEMA DE AUTOCORREÇÃO: Antes de finalizar, faça uma varredura interna e revise procurando por bugs, IDs quebrados, erros de console, falhas de responsividade em dispositivos móveis ou problemas de acessibilidade. Corrija tudo internamente.
+    10. Devolva UNICAMENTE o código final purificado dentro de um bloco de código markdown \`\`\`html, sem textos conversacionais fora dele.
+    `;
+
+    let promptFinal = "";
+    if (codigoAtual === "") {
+        // Fluxo Inicial
+        promptFinal = `${instrucoesAvançadas}\n\nTarefa: Crie um aplicativo web inovador do zero baseado em: "${userInput}".`;
+    } else {
+        // Fluxo de Atualização / Manutenção Dinâmica
+        promptFinal = `${instrucoesAvançadas}\n\nCódigo de produção atual:\n\`\`\`html\n${codigoAtual}\n\`\`\`\n\nTarefa: Modifique ou acrescente novas camadas profissionais a este código respeitando a base existente para realizar este pedido: "${userInput}". Não envie trechos soltos, refaça o arquivo HTML completo contendo as mudanças aplicadas e revisadas.`;
+    }
+
+    // ETAPA 1: Mostra o Prompt Avançado gerado na aba lateral automaticamente
+    document.getElementById('output-prompt').value = promptFinal;
+    switchTab('prompt');
+
+    try {
+        // ETAPA 2: Aciona a API com a estrutura complexa
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: promptFinal }] }]
+            })
+        });
+
+        if (!response.ok) {
+            const errData = await response.json();
+            throw new Error(errData.error?.message || "Falha ao processar os tokens.");
+        }
+
+        const data = await response.json();
+        let resultadoTexto = data.candidates[0].content.parts[0].text;
+
+        // Limpeza dos blocos markdown para extrair código de execução limpo
+        resultadoTexto = resultadoTexto.replace(/```html/gi, "").replace(/```/gi, "").trim();
+
+        // ETAPA 3: Atualiza código fonte na aba e atualiza o PREVIEW instantaneamente
+        codigoAtual = resultadoTexto;
+        document.getElementById('output-code').value = codigoAtual;
+        document.getElementById('app-preview').srcdoc = codigoAtual;
+
+        // Altera para a aba do código pronto na tela
+        switchTab('code');
+        document.getElementById('user-input').value = "";
+
+    } catch (error) {
+        console.error(error);
+        alert(`Erro de Compilação da IA: ${error.message}`);
+    } finally {
+        btn.innerText = "Processar Aplicativo";
+        btn.disabled = false;
+    }
+});
+
+// Controles de Dispositivos e Tela
+function changeDevice(device) {
+    const simulator = document.getElementById('device-simulator');
+    simulator.className = ''; 
+
+    if (device === 'mobile') simulator.classList.add('device-mobile');
+    if (device === 'tablet') simulator.classList.add('device-tablet');
+    if (device === 'desktop') simulator.classList.add('device-desktop');
 }
 
-function switchTab(tab){
+function toggleFullscreen() {
+    const simulator = document.getElementById('device-simulator');
+    const oldBtn = document.querySelector('.close-fs-btn');
+    if (oldBtn) oldBtn.remove();
 
- const promptBtn=
- document.getElementById(
- "tab-btn-prompt"
- );
+    simulator.classList.toggle('device-fullscreen');
 
- const codeBtn=
- document.getElementById(
- "tab-btn-code"
- );
-
- const prompt=
- document.getElementById(
- "tab-content-prompt"
- );
-
- const code=
- document.getElementById(
- "tab-content-code"
- );
-
- if(tab==="prompt"){
-
-  promptBtn.classList.add(
-   "active"
-  );
-
-  codeBtn.classList.remove(
-   "active"
-  );
-
-  prompt.style.display=
-  "block";
-
-  code.style.display=
-  "none";
-
- }else{
-
-  codeBtn.classList.add(
-   "active"
-  );
-
-  promptBtn.classList.remove(
-   "active"
-  );
-
-  code.style.display=
-  "block";
-
-  prompt.style.display=
-  "none";
-
- }
-
+    if (simulator.classList.contains('device-fullscreen')) {
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = "❌ Sair da Tela Cheia";
+        closeBtn.className = 'close-fs-btn';
+        closeBtn.onclick = () => {
+            simulator.classList.remove('device-fullscreen');
+            closeBtn.remove();
+        };
+        document.body.appendChild(closeBtn);
+    }
 }
 
-function changeDevice(device){
+// Chaveador de Abas Corrigido
+function switchTab(tabAlvo) {
+    const btnPrompt = document.getElementById('tab-btn-prompt');
+    const btnCode = document.getElementById('tab-btn-code');
+    const contentPrompt = document.getElementById('tab-content-prompt');
+    const contentCode = document.getElementById('tab-content-code');
 
- const sim=
- document.getElementById(
- "device-simulator"
- );
-
- sim.className="";
-
- if(device==="mobile"){
-  sim.classList.add(
-   "device-mobile"
-  );
- }
-
- if(device==="tablet"){
-  sim.classList.add(
-   "device-tablet"
-  );
- }
-
- if(device==="desktop"){
-  sim.classList.add(
-   "device-desktop"
-  );
- }
-
-}
-
-function toggleFullscreen(){
-
- const sim=
- document.getElementById(
- "device-simulator"
- );
-
- if(!document.fullscreenElement){
-
-   sim.requestFullscreen();
-
- }else{
-
-   document.exitFullscreen();
-
- }
-
+    if (tabAlvo === 'prompt') {
+        btnPrompt.classList.add('active');
+        btnCode.classList.remove('active');
+        contentPrompt.style.display = 'block';
+        contentCode.style.display = 'none';
+    } else {
+        btnCode.classList.add('active');
+        btnPrompt.classList.remove('active');
+        contentCode.style.display = 'block';
+        contentPrompt.style.display = 'none';
+    }
 }
