@@ -1,61 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criador de Apps com Gemini 2.5 Flash</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criador de Apps IA</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="container">
-        <!-- PAINEL LATERAL: Configurações, Input e Abas -->
-        <aside class="sidebar">
-            <h2>Criador de Apps</h2>
-            
-            <!-- Campo para colar a Chave da API -->
-            <div class="api-key-container">
-                <label for="api-key-input">Chave API Gemini:</label>
-                <input type="password" id="api-key-input" placeholder="Cole sua AIza... do AI Studio aqui">
-            </div>
+<div class="container">
 
-            <!-- Entrada do Usuário -->
-            <textarea id="user-input" placeholder="Descreva o aplicativo que você quer criar... Ex: Um app de cronômetro pomodoro com design futurista e sons."></textarea>
-            <button id="btn-generate">Gerar Aplicativo</button>
+  <aside class="sidebar">
 
-            <hr class="divider">
+    <h2>CRIADOR DE APPS IA</h2>
 
-            <!-- Abas laterais solicitadas -->
-            <div class="tabs">
-                <button id="tab-btn-prompt" class="tab-btn active" onclick="switchTab('prompt')">Prompt</button>
-                <button id="tab-btn-code" class="tab-btn" onclick="switchTab('code')">Código Gerado</button>
-            </div>
-            
-            <!-- Conteúdo das Abas -->
-            <div id="tab-content-prompt" class="tab-content">
-                <textarea id="output-prompt" readonly placeholder="O prompt que o sistema estruturar aparecerá aqui..."></textarea>
-            </div>
-            <div id="tab-content-code" class="tab-content" style="display:none;">
-                <textarea id="output-code" readonly placeholder="O código fonte gerado aparecerá aqui..."></textarea>
-            </div>
-        </aside>
-
-        <!-- ÁREA PRINCIPAL: Controle de telas e Visualização (Preview) -->
-        <main class="preview-area">
-            <div class="device-controls">
-                <button onclick="changeDevice('mobile')">📱 Celular</button>
-                <button onclick="changeDevice('tablet')">📟 Tablet</button>
-                <button onclick="changeDevice('desktop')">💻 Desktop</button>
-                <button onclick="toggleFullscreen()" class="btn-fullscreen">📺 Tela Cheia</button>
-            </div>
-
-            <!-- Simulador de Dispositivos -->
-            <div id="device-simulator" class="device-desktop">
-                <iframe id="app-preview" srcdoc="<div style='font-family:sans-serif; text-align:center; margin-top:100px; color:#555;'><h2>A visualização do seu app aparecerá aqui!</h2><p>Digite a descrição ao lado e clique em Gerar.</p></div>"></iframe>
-            </div>
-        </main>
+    <div class="api-box">
+      <label>Chave Gemini API</label>
+      <input id="api-key-input" type="password" placeholder="Cole sua API">
     </div>
 
-    <script src="app.js"></script>
+    <div class="input-box">
+      <label>Descreva seu app</label>
+      <textarea id="user-input" placeholder="Digite sua ideia"></textarea>
+    </div>
+
+    <button id="btn-generate">GERAR APP</button>
+
+    <div id="error-box"></div>
+
+    <div class="tabs">
+
+      <button id="tab-btn-prompt"
+              class="tab-btn active"
+              onclick="switchTab('prompt')">
+
+        Prompt
+
+      </button>
+
+      <button id="tab-btn-code"
+              class="tab-btn"
+              onclick="switchTab('code')">
+
+        Código
+
+      </button>
+
+    </div>
+
+    <div id="tab-content-prompt" class="tab-content">
+      <textarea id="output-prompt" readonly></textarea>
+    </div>
+
+    <div id="tab-content-code"
+         class="tab-content"
+         style="display:none">
+
+      <textarea id="output-code" readonly></textarea>
+
+    </div>
+
+  </aside>
+
+
+  <main class="preview-area">
+
+    <div class="device-controls">
+
+      <button class="device-btn"
+              onclick="changeDevice('mobile')">
+        📱 Mobile
+      </button>
+
+      <button class="device-btn"
+              onclick="changeDevice('tablet')">
+        📟 Tablet
+      </button>
+
+      <button class="device-btn"
+              onclick="changeDevice('desktop')">
+        💻 Desktop
+      </button>
+
+      <button class="device-btn"
+              onclick="toggleFullscreen()">
+        📺 Tela Cheia
+      </button>
+
+    </div>
+
+
+    <div id="device-simulator"
+         class="device-desktop">
+
+      <iframe id="app-preview"
+              sandbox="allow-scripts allow-forms">
+      </iframe>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script src="app.js"></script>
+
 </body>
 </html>
