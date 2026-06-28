@@ -1,54 +1,91 @@
-const GEMINI_API_KEY = "SUA_CHAVE_API_AQUI"; // Insira sua chave da Google AI Studio aqui
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+// Monitora quando a página carrega para resgatar a chave salvada no navegador
+document.addEventListener('DOMContentLoaded', () => {
+    const savedKey = localStorage.getItem('gemini_api_key');
+    if (savedKey) {
+        document.getElementById('api-key-input').value = savedKey;
+    }
+});
 
 document.getElementById('btn-generate').addEventListener('click', async () => {
-    const userInput = document.getElementById('user-input').value;
-    if (!userInput) return alert("Por favor, descreva o app primeiro!");
+    const geminiKey = document.getElementById('api-key-input').value.trim();
+    const userInput = document.getElementById('user-input').value.trim();
 
-    // Etapa 1: Criar o prompt otimizado (Melhoria automática)
-    const promptAprimorado = `Crie um aplicativo web único (single file) baseado na seguinte descrição do usuário: "${userInput}". O retorno deve ser exclusivamente um código HTML completo e funcional com CSS (pode usar Tailwind via CDN se preferir) e JavaScript inclusos. Não escreva nenhuma explicação antes ou depois, apenas o código puro dentro de blocos de código HTML.`;
-    document.getElementById('output-prompt').value = promptAprimorado;
+    // Validações iniciais
+    if (!geminiKey) {
+        alert("Por favor, cole sua chave da API do Gemini no campo localizado no topo!");
+        return;
+    }
+    if (!userInput) {
+        alert("Descreva o aplicativo que você deseja criar antes de prosseguir.");
+        return;
+    }
 
-    // Alterar para a aba do prompt para o usuário ver o processo
+    // Salva a chave no cache local para não ter que colar de novo na próxima vez
+    localStorage.setItem('gemini_api_key', geminiKey);
+
+    // Endereço oficial da API usando a arquitetura estável do Gemini 2.5 Flash
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`;
+
+    // Etapa 1: Construção dinâmica do prompt estrutural
+    const promptOtimizado = `Você é um engenheiro de software especialista. Crie um aplicativo web de arquivo único (HTML) completo, moderno, responsivo e totalmente funcional com base nesta requisição do usuário: "${userInput}". O retorno deve conter obrigatoriamente as tags <style> e <script> embutidas com todas as funcionalidades operacionais e interativas pedidas. Não envie textos explicativos, nem saudações, nem notas. Retorne única e estritamente o código limpo envolvido por blocos de código markdown \`\`\`html.`;
+    
+    // Alimenta o visor da aba de Prompt e muda o foco para ela
+    document.getElementById('output-prompt').value = promptOtimizado;
     switchTab('prompt');
 
+    // Altera temporariamente o estado do botão
+    const btn = document.getElementById('btn-generate');
+    const originalText = btn.innerText;
+    btn.innerText = "Construindo Código... ⏳";
+    btn.disabled = true;
+
     try {
-        // Etapa 2: Chamar a API do Gemini 2.5 Flash
+        // Etapa 2: Requisição HTTP para a API do Gemini
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                contents: [{ parts: [{ text: promptAprimorado }] }]
+                contents: [{ parts: [{ text: promptOtimizado }] }]
             })
         });
 
+        if (!response.ok) {
+            const errorBody = await response.json();
+            throw new Error(errorBody.error?.message || "Falha na comunicação com a API.");
+        }
+
         const data = await response.json();
-        let codigoGerado = data.candidates[0].content.parts[0].text;
+        let codigoCru = data.candidates[0].content.parts[0].text;
 
-        // Limpar as tags de marcação (```html ... ```) que o Gemini costuma enviar
-        codigoGerado = codigoGerado.replace(/```html/g, "").replace(/```/g, "").trim();
+        // Limpeza de blocos de formatação markdown que o Gemini retorna por padrão
+        codigoCru = codigoCru.replace(/```html/gi, "").replace(/```/gi, "").trim();
 
-        // Etapa 3: Exibir o código gerado na tela lateral
-        document.getElementById('output-code').value = codigoGerado;
+        // Etapa 3: Entrega do código na aba correspondente
+        document.getElementById('output-code').value = codigoCru;
 
-        // Etapa 4: Injetar o código gerado no Iframe de visualização
+        // Etapa 4: Injeção do código gerado no interpretador (iframe)
         const iframe = document.getElementById('app-preview');
-        iframe.srcdoc = codigoGerado;
+        iframe.srcdoc = codigoCru;
 
-        // Trocar visualização para a aba de código automaticamente
+        // Alterna automaticamente para visualização da aba de Código Fonte
         switchTab('code');
 
-    } catch (error) {
-        console.error("Erro ao gerar app:", error);
-        alert("Ocorreu um erro ao conectar com o Gemini.");
+    } catch (erro) {
+        console.error(erro);
+        alert(`Erro de execução: ${erro.message}. Verifique sua conexão e se a chave de API é válida.`);
+    } finally {
+        // Restaura o estado normal do botão
+        btn.innerText = originalText;
+        btn.disabled = false;
     }
 });
 
-// Funções de controle de tela (Dispositivos)
+// Funções de Gerenciamento das Telas de Simulação
 function changeDevice(device) {
     const simulator = document.getElementById('device-simulator');
-    simulator.className = ''; // Limpa as classes anteriores
-    
+    // Remove qualquer classe de dimensionamento prévia
+    simulator.className = ''; 
+
     if (device === 'mobile') simulator.classList.add('device-mobile');
     if (device === 'tablet') simulator.classList.add('device-tablet');
     if (device === 'desktop') simulator.classList.add('device-desktop');
@@ -56,22 +93,42 @@ function changeDevice(device) {
 
 function toggleFullscreen() {
     const simulator = document.getElementById('device-simulator');
+    
+    // Verifica se já está em tela cheia para remover o botão extra de fechamento se houver
+    const oldBtn = document.querySelector('.close-fs-btn');
+    if (oldBtn) oldBtn.remove();
+
     simulator.classList.toggle('device-fullscreen');
+
+    // Se entrou em tela cheia, adiciona um botão flutuante para conseguir sair dela facilmente
+    if (simulator.classList.contains('device-fullscreen')) {
+        const closeBtn = document.createElement('button');
+        closeBtn.innerText = "❌ Sair da Tela Cheia";
+        closeBtn.className = 'close-fs-btn';
+        closeBtn.onclick = () => {
+            simulator.classList.remove('device-fullscreen');
+            closeBtn.remove();
+        };
+        document.body.appendChild(closeBtn);
+    }
 }
 
-// Alternar entre as abas de texto (Prompt / Código)
-function switchTab(tab) {
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(btn => btn.classList.remove('active'));
-    
-    document.getElementById('tab-content-prompt').style.display = 'none';
-    document.getElementById('tab-content-code').style.display = 'none';
+// Funções de chaveamento das abas laterais (Prompt / Código)
+function switchTab(tabAlvo) {
+    const btnPrompt = document.getElementById('tab-btn-prompt');
+    const btnCode = document.getElementById('tab-btn-code');
+    const contentPrompt = document.getElementById('tab-content-prompt');
+    const contentCode = document.getElementById('tab-content-code');
 
-    if (tab === 'prompt') {
-        document.getElementById('tab-content-prompt').style.display = 'block';
-        tabs[0].classList.add('active');
+    if (tabAlvo === 'prompt') {
+        btnPrompt.classList.add('active');
+        btnCode.classList.remove('active');
+        contentPrompt.style.display = 'block';
+        contentCode.style.display = 'none';
     } else {
-        document.getElementById('tab-content-code').style.display = 'block';
-        tabs[1].classList.add('active');
+        btnCode.classList.add('active');
+        btnPrompt.classList.remove('active');
+        contentCode.style.display = 'block';
+        contentPrompt.style.display = 'none';
     }
 }
