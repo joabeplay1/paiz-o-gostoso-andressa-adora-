@@ -1,247 +1,148 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:Arial;
 }
 
-body, html {
-    height: 100%;
-    background-color: #1e1e2e;
-    color: #cdd6f4;
-    overflow: hidden;
+body{
+ background:#0d1117;
+ color:white;
+ height:100vh;
+ overflow:hidden;
 }
 
-.container {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
+.container{
+ display:flex;
+ width:100%;
+ height:100vh;
 }
 
-/* Painel Lateral */
-.sidebar {
-    width: 380px;
-    min-width: 380px;
-    background-color: #181825;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    border-right: 1px solid #313244;
-    height: 100%;
+.sidebar{
+ width:380px;
+ background:#161b22;
+ padding:20px;
+ display:flex;
+ flex-direction:column;
+ gap:15px;
 }
 
-.sidebar h2 {
-    font-size: 1.4rem;
-    color: #f5c2e7;
-    margin-bottom: 5px;
+.sidebar h2{
+ text-align:center;
 }
 
-.api-key-container {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+input, textarea{
+ width:100%;
+ background:#21262d;
+ color:white;
+ border:none;
+ padding:10px;
+ border-radius:6px;
 }
 
-.api-key-container label {
-    font-size: 0.8rem;
-    color: #a6adc8;
+textarea{
+ resize:none;
+ height:120px;
 }
 
-.api-key-container input {
-    width: 100%;
-    padding: 10px;
-    background-color: #313244;
-    color: #fff;
-    border: 1px solid #45475a;
-    border-radius: 8px;
-    outline: none;
+#btn-generate{
+ background:#58a6ff;
+ border:none;
+ padding:12px;
+ cursor:pointer;
+ border-radius:6px;
+ font-weight:bold;
 }
 
-.api-key-container input:focus {
-    border-color: #cba6f7;
+.tabs{
+ display:flex;
+ gap:5px;
 }
 
-textarea {
-    width: 100%;
-    height: 130px;
-    background-color: #313244;
-    color: #cdd6f4;
-    border: 1px solid #45475a;
-    border-radius: 8px;
-    padding: 12px;
-    resize: none;
-    outline: none;
-    font-size: 0.9rem;
-    line-height: 1.4;
+.tab-btn{
+ flex:1;
+ border:none;
+ padding:10px;
+ cursor:pointer;
+ background:#21262d;
+ color:white;
 }
 
-textarea:focus {
-    border-color: #cba6f7;
+.active{
+ background:#58a6ff;
 }
 
-#btn-generate {
-    background-color: #a6e3a1;
-    color: #11111b;
-    border: none;
-    padding: 14px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1rem;
-    transition: background 0.2s;
+.tab-content{
+ flex:1;
 }
 
-#btn-generate:hover {
-    background-color: #94e2d5;
+.tab-content textarea{
+ height:100%;
+ font-family:monospace;
 }
 
-.divider {
-    border: 0;
-    border-top: 1px solid #313244;
-    margin: 5px 0;
+.preview-area{
+ flex:1;
+ display:flex;
+ flex-direction:column;
+ padding:20px;
+ background:#010409;
 }
 
-/* Sistema de Abas */
-.tabs {
-    display: flex;
-    gap: 8px;
-    background-color: #11111b;
-    padding: 4px;
-    border-radius: 8px;
+.device-controls{
+ display:flex;
+ gap:10px;
+ margin-bottom:20px;
 }
 
-.tab-btn {
-    flex: 1;
-    background: transparent;
-    color: #a6adc8;
-    border: none;
-    padding: 8px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.2s;
+.device-btn{
+ padding:10px;
+ cursor:pointer;
+ border:none;
+ background:#21262d;
+ color:white;
 }
 
-.tab-btn.active {
-    background-color: #313244;
-    color: #f5e0dc;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+#device-simulator{
+ background:white;
+ transition:0.3s;
+ overflow:hidden;
 }
 
-.tab-content {
-    flex: 1;
-    display: flex;
+#app-preview{
+ width:100%;
+ height:100%;
+ border:none;
 }
 
-.tab-content textarea {
-    height: 100%;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.85rem;
-    background-color: #11111b;
+.device-mobile{
+ width:375px;
+ height:650px;
 }
 
-/* Área de Visualização Direita */
-.preview-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px;
-    background-color: #11111b;
-    height: 100%;
+.device-tablet{
+ width:768px;
+ height:850px;
 }
 
-.device-controls {
-    margin-bottom: 15px;
-    display: flex;
-    gap: 8px;
-    background: #181825;
-    padding: 6px 12px;
-    border-radius: 30px;
-    border: 1px solid #313244;
+.device-desktop{
+ width:100%;
+ height:calc(100vh - 120px);
 }
 
-.device-controls button {
-    background: transparent;
-    color: #cdd6f4;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background 0.2s;
+#error-box{
+ color:red;
+ min-height:20px;
 }
 
-.device-controls button:hover {
-    background: #313244;
+@media(max-width:900px){
+
+.container{
+ flex-direction:column;
 }
 
-.device-controls .btn-fullscreen {
-    background-color: #f38ba8;
-    color: #11111b;
-}
-.device-controls .btn-fullscreen:hover {
-    background-color: #eba0ac;
+.sidebar{
+ width:100%;
 }
 
-/* Simuladores de Resolução */
-#device-simulator {
-    background: #ffffff;
-    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.6);
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    overflow: hidden;
-}
-
-#app-preview {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-/* Classes de Dispositivo acionadas pelo JS */
-.device-mobile { 
-    width: 375px; 
-    height: calc(100vh - 120px); 
-    border: 12px solid #313244; 
-    border-radius: 32px; 
-}
-.device-tablet { 
-    width: 768px; 
-    height: calc(100vh - 120px); 
-    border: 14px solid #313244; 
-    border-radius: 24px; 
-}
-.device-desktop { 
-    width: 100%; 
-    height: calc(100vh - 120px); 
-    border-radius: 8px;
-}
-.device-fullscreen { 
-    position: fixed; 
-    top: 0; 
-    left: 0; 
-    width: 100vw !important; 
-    height: 100vh !important; 
-    z-index: 99999; 
-    border-radius: 0 !important; 
-    border: none !important; 
-}
-
-/* Botão Flutuante de Fechar Tela Cheia */
-.close-fs-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100000;
-    background: #f38ba8;
-    color: #11111b;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
