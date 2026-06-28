@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criador de Apps com Gemini 2.5 Flash</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Criador de Apps</h2>
+            <textarea id="user-input" placeholder="Descreva o aplicativo que você quer criar... Ex: Um app de lista de tarefas com tema escuro."></textarea>
+            <button id="btn-generate">Gerar Aplicativo</button>
+
+            <hr>
+
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('prompt')">Prompt Gerado</button>
+                <button class="tab-btn" onclick="switchTab('code')">Código Fonte</button>
+            </div>
+            
+            <div id="tab-content-prompt" class="tab-content">
+                <textarea id="output-prompt" readonly placeholder="O prompt aprimorado aparecerá aqui..."></textarea>
+            </div>
+            <div id="tab-content-code" class="tab-content" style="display:none;">
+                <textarea id="output-code" readonly placeholder="O código HTML/CSS/JS aparecerá aqui..."></textarea>
+            </div>
+        </aside>
+
+        <main class="preview-area">
+            <div class="device-controls">
+                <button onclick="changeDevice('mobile')">📱 Celular</button>
+                <button onclick="changeDevice('tablet')">📟 Tablet</button>
+                <button onclick="changeDevice('desktop')">💻 Desktop</button>
+                <button onclick="toggleFullscreen()">📺 Tela Cheia</button>
+            </div>
+
+            <div id="device-simulator" class="device-desktop">
+                <iframe id="app-preview" srcdoc="<h1>O seu app aparecerá aqui</h1>"></iframe>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
