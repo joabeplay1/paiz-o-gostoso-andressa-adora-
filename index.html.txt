@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Universal IntelliCalc Pro</title>
+    <link class="css-file" rel="stylesheet" href="style.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00ADB5">
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registrado com sucesso!', reg.scope))
+                    .catch(err => console.log('Falha ao registrar o Service Worker:', err));
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="calculator-container" data-theme="dark">
+        <div class="header">
+            <div class="mode-selector">
+                <button class="mode-button active" data-mode="standard">Padrão</button>
+                <button class="mode-button" data-mode="scientific">Científico</button>
+                <button class="mode-button" data-mode="programmer">Programador</button>
+                <button class="mode-button" data-mode="unit-converter">Unidades</button>
+                <button class="mode-button" data-mode="tip-calculator">Gorjetas</button>
+            </div>
+            <button id="theme-toggle" class="theme-toggle">🌙</button>
+        </div>
+
+        <div class="display-area">
+            <div class="history-display" id="history-display"></div>
+            <div class="main-display" id="main-display">0</div>
+        </div>
+
+        <div class="keyboard">
+            <div class="mode-specific-buttons standard-mode">
+                <button class="func-button" data-action="clear-entry">CE</button>
+                <button class="func-button" data-action="clear-all">C</button>
+                <button class="func-button" data-action="backspace">⌫</button>
+                <button class="operator-button" data-op="/">÷</button>
+
+                <button class="func-button" data-action="memory-clear">MC</button>
+                <button class="func-button" data-action="memory-recall">MR</button>
+                <button class="func-button" data-action="memory-add">M+</button>
+                <button class="func-button" data-action="memory-subtract">M-</button>
+
+                <button class="number-button">7</button>
+                <button class="number-button">8</button>
+                <button class="number-button">9</button>
+                <button class="operator-button" data-op="*">×</button>
+
+                <button class="number-button">4</button>
+                <button class="number-button">5</button>
+                <button class="number-button">6</button>
+                <button class="operator-button" data-op="-">-</button>
+
+                <button class="number-button">1</button>
+                <button class="number-button">2</button>
+                <button class="number-button">3</button>
+                <button class="operator-button" data-op="+">+</button>
+
+                <button class="func-button" data-action="negate">+/-</button>
+                <button class="number-button">0</button>
+                <button class="func-button" data-action="decimal">.</button>
+                <button class="equals-button" data-action="calculate">=</button>
+            </div>
+
+            <div class="mode-specific-buttons scientific-mode hidden">
+                <button class="func-button" data-action="clear-entry">CE</button>
+                <button class="func-button" data-action="clear-all">C</button>
+                <button class="func-button" data-action="backspace">⌫</button>
+                <button class="operator-button" data-op="/">÷</button>
+
+                <button class="scientific-button" data-func="toggle-angle-unit">DEG</button>
+                <button class="scientific-button" data-func="sin">sin</button>
+                <button class="scientific-button" data-func="cos">cos</button>
+                <button class="scientific-button" data-func="tan">tan</button>
+
+                <button class="scientific-button" data-func="pi">π</button>
+                <button class="scientific-button" data-func="e">e</button>
+                <button class="scientific-button" data-func="sqrt">√</button>
+                <button class="scientific-button" data-func="pow2">x²</button>
+
+                <button class="scientific-button" data-func="log">log</button>
+                <button class="scientific-button" data-func="ln">ln</button>
+                <button class="scientific-button" data-func="exp">e^x</button>
+                <button class="scientific-button" data-func="powY">x^y</button>
+
+                <button class="number-button">7</button>
+                <button class="number-button">8</button>
+                <button class="number-button">9</button>
+                <button class="operator-button" data-op="*">×</button>
+
+                <button class="number-button">4</button>
+                <button class="number-button">5</button>
+                <button class="number-button">6</button>
+                <button class="operator-button" data-op="-">-</button>
+
+                <button class="number-button">1</button>
+                <button class="number-button">2</button>
+                <button class="number-button">3</button>
+                <button class="operator-button" data-op="+">+</button>
+
+                <button class="func-button" data-action="negate">+/-</button>
+                <button class="number-button">0</button>
+                <button class="func-button" data-action="decimal">.</button>
+                <button class="equals-button" data-action="calculate">=</button>
+            </div>
+            <div class="mode-specific-buttons programmer-mode hidden">
+                <div class="base-selector">
+                    <label><input type="radio" name="base" value="dec" checked> DEC</label>
+                    <label><input type="radio" name="base" value="bin"> BIN</label>
+                    <label><input type="radio" name="base" value="hex"> HEX</label>
+                </div>
+                <div class="programmer-outputs">
+                    <div>DEC: <span id="prog-dec">0</span></div>
+                    <div>BIN: <span id="prog-bin">0</span></div>
+                    <div>HEX: <span id="prog-hex">0</span></div>
+                </div>
+
+                <button class="func-button" data-action="clear-entry">CE</button>
+                <button class="func-button" data-action="clear-all">C</button>
+                <button class="func-button" data-action="backspace">⌫</button>
+                <button class="operator-button" data-op="/">÷</button>
+
+                <button class="bitwise-button" data-bitwise="and">AND</button>
+                <button class="bitwise-button" data-bitwise="or">OR</button>
+                <button class="bitwise-button" data-bitwise="xor">XOR</button>
+                <button class="bitwise-button" data-bitwise="not">NOT</button>
+
+                <button class="bitwise-button" data-bitwise="shl">«</button>
+                <button class="bitwise-button" data-bitwise="shr">»</button>
+                <button class="programmer-button" data-hex="A">A</button>
+                <button class="programmer-button" data-hex="B">B</button>
+
+                <button class="number-button">7</button>
+                <button class="number-button">8</button>
+                <button class="number-button">9</button>
+                <button class="operator-button" data-op="*">×</button>
+
+                <button class="number-button">4</button>
+                <button class="number-button">5</button>
+                <button class="number-button">6</button>
+                <button class="operator-button" data-op="-">-</button>
+
+                <button class="number-button">1</button>
+                <button class="number-button">2</button>
+                <button class="number-button">3</button>
+                <button class="operator-button" data-op="+">+</button>
+
+                <button class="programmer-button" data-hex="C">C</button>
+                <button class="number-button">0</button>
+                <button class="programmer-button" data-hex="D">D</button>
+                <button class="equals-button" data-action="calculate">=</button>
+                <button class="programmer-button" data-hex="E">E</button>
+                <button class="programmer-button" data-hex="F">F</button>
+            </div>
+
+            <div class="mode-specific-buttons unit-converter-mode hidden">
+                <h2>Conversor de Unidades</h2>
+                <div class="converter-row">
+                    <select id="unit-category">
+                        <option value="length">Comprimento</option>
+                        <option value="mass">Massa</option>
+                        <option value="temperature">Temperatura</option>
+                    </select>
+                </div>
+                <div class="converter-row">
+                    <input type="number" id="unit-input" value="0">
+                    <select id="unit-from"></select>
+                </div>
+                <div class="converter-row">
+                    <span>=</span>
+                    <input type="text" id="unit-output" readonly>
+                    <select id="unit-to"></select>
+                </div>
+                <button class="func-button" id="convert-unit">Converter</button>
+                <button class="func-button" data-action="clear-all">C</button>
+            </div>
+
+            <div class="mode-specific-buttons tip-calculator-mode hidden">
+                <h2>Calculadora de Gorjetas</h2>
+                <div class="tip-input-group">
+                    <label for="bill-amount">Valor da Conta:</label>
+                    <input type="number" id="bill-amount" value="0">
+                </div>
+                <div class="tip-input-group">
+                    <label for="tip-percent">Gorjeta (%):</label>
+                    <input type="number" id="tip-percent" value="15">
+                </div>
+                <div class="tip-input-group">
+                    <label for="num-people">Pessoas:</label>
+                    <input type="number" id="num-people" value="1">
+                </div>
+                <button class="func-button" id="calculate-tip">Calcular</button>
+                <div class="tip-results">
+                    <p>Gorjeta Total: <span id="tip-total">0.00</span></p>
+                    <p>Total Geral: <span id="total-with-tip">0.00</span></p>
+                    <p>Por Pessoa: <span id="tip-per-person">0.00</span></p>
+                </div>
+                <button class="func-button" data-action="clear-all">C</button>
+            </div>
+        </div>
+
+        <div class="history-panel hidden" id="full-history-panel">
+            <h3>Histórico de Cálculos</h3>
+            <ul id="full-history-list"></ul>
+            <button id="clear-history">Limpar Histórico</button>
+            <button id="close-history">Fechar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
