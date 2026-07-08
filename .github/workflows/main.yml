@@ -6,22 +6,21 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Instalar Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Instalar Nativefier
         run: npm install -g nativefier
 
       - name: Criar o Executável
-        # Substitua a URL abaixo pelo seu link ou o caminho do arquivo local
         run: nativefier --name "MeuApp" "https://joabeplay1.github.io/paiz-o-gostoso-andressa-adora-/"
 
       - name: Upload do arquivo
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: App-Windows
           path: MeuApp-win32-x64
